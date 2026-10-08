@@ -1,0 +1,16 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "cleanUrls": false,
+  "redirects": [
+    { "source": "/", "destination": "/beethoven", "permanent": false }
+  ],
+  "rewrites": [
+    { "source": "/beethoven", "destination": "/beethoven/index.html" }
+  ],
+  "headers": [
+    {
+      "source": "/beethoven/assets/(img|video)/(.*)",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=86400, stale-while-revalidate=604800" }]
+    }
+  ]
+}
