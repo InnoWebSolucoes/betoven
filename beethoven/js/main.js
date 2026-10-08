@@ -472,12 +472,27 @@
           <span class="svc__toggle">${icon('plus')}</span>
         </button>
         <div class="svc__more" id="svc-${s.id}"><div><div class="svc__inner">
+          <p class="svc__desc">${s.short}</p>
           <ul>${s.includes.map(x => `<li>${x}</li>`).join('')}</ul>
           <button class="btn btn--dark" data-book="${s.id}">Marcar este serviço${icon('arrow')}</button>
         </div></div></div>
       </li>`).join('');
+      // no telemóvel mostra 6 serviços e um botão para ver o resto
+      const collapse = phoneMQ.matches && list.length > 6;
+      svcList.classList.toggle('is-collapsed', collapse);
+      moreBtn.hidden = !collapse;
+      moreBtn.innerHTML = `Ver todos os serviços (${list.length})${icon('chev-d')}`;
       if (hasGSAP) ScrollTrigger.refresh();
     };
+    const phoneMQ = matchMedia('(max-width: 640px)');
+    const moreBtn = document.createElement('button');
+    moreBtn.className = 'btn btn--ghost svc-more';
+    svcList.after(moreBtn);
+    moreBtn.addEventListener('click', () => {
+      svcList.classList.remove('is-collapsed');
+      moreBtn.hidden = true;
+      if (hasGSAP) ScrollTrigger.refresh();
+    });
     render();
     svcChips.addEventListener('click', e => {
       const b = e.target.closest('[data-svc-cat]');
